@@ -1,14 +1,8 @@
 package com.mtihc.minecraft.treasurechest.v8.core;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
+import com.mtihc.minecraft.treasurechest.v8.plugin.TreasureChestPlugin;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -96,7 +90,7 @@ public class TreasureManager extends TreasureDataFacade {
 		}
 	}
 	
-	private final JavaPlugin plugin;
+	public final TreasureChestPlugin plugin;
 	private ITreasureManagerConfiguration config;
 	
 	private final LinkedHashMap<String, TreasureInventory> inventories = new LinkedHashMap();
@@ -119,7 +113,7 @@ public class TreasureManager extends TreasureDataFacade {
 	 * @param permAccessUnlimited Unlimited treasure access permission string
 	 * @param permRank The first part of the rank permission string
 	 */
-	public TreasureManager(JavaPlugin plugin, ITreasureManagerConfiguration config,
+	public TreasureManager(TreasureChestPlugin plugin, ITreasureManagerConfiguration config,
 			ITreasureChestRepository chests,
 			ITreasureChestGroupRepository groups, ITreasureChestMemory memory, String permAccessNormal, String permAccessUnlimited, String permRank) {
 		super(config, chests, groups, memory);
@@ -248,8 +242,6 @@ public class TreasureManager extends TreasureDataFacade {
 		
 		
 		openTreasureInventory(player, tchest);
-		
-		
 	}
 	
 	/**

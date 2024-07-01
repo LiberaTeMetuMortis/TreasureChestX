@@ -41,7 +41,7 @@ public class TreasureChestPlugin extends JavaPlugin implements Listener {
 	private TreasureManagerConfiguration config;
 	private TreasureManager manager;
 	private SimpleCommand cmd;
-	
+	private Database database;
 	
 	
 	
@@ -51,6 +51,13 @@ public class TreasureChestPlugin extends JavaPlugin implements Listener {
 
 		// create config
 		config = new TreasureManagerConfiguration(this, "config");
+		try {
+			database = new Database(this);
+		} catch (Exception e) {
+			getLogger().severe("Failed to create database: " + e.getMessage());
+		}
+
+		new PlaceholderSupport(this).register();
 		
 		// create manager
 		manager = new TreasureManager(
@@ -89,7 +96,10 @@ public class TreasureChestPlugin extends JavaPlugin implements Listener {
 	}
 	
 	
-	
+	@Override
+	public void onDisable() {
+		database.close();
+	}
 	
 	
 	/**
@@ -98,6 +108,10 @@ public class TreasureChestPlugin extends JavaPlugin implements Listener {
 	 */
 	public TreasureManager getManager() {
 		return manager;
+	}
+
+	public Database getDatabase() {
+		return database;
 	}
 	
 	

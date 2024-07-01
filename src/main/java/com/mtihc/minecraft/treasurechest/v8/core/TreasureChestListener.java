@@ -1,7 +1,11 @@
 package com.mtihc.minecraft.treasurechest.v8.core;
 
 import java.util.Iterator;
+import java.util.UUID;
 
+import com.mtihc.minecraft.treasurechest.v8.events.TreasureChestFoundEvent;
+import com.mtihc.minecraft.treasurechest.v8.plugin.Database;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -19,6 +23,7 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -39,6 +44,18 @@ class TreasureChestListener implements Listener {
 	 */
 	TreasureChestListener(TreasureManager manager) {
 		this.control = manager;
+	}
+
+	@EventHandler
+	public void chestFound(TreasureChestFoundEvent event) {
+		UUID uuid = event.getPlayer().getUniqueId();
+		Database db = control.plugin.getDatabase();
+		db.setChestCount(uuid, db.getChestCount(uuid) + 1);
+	}
+
+	@EventHandler
+	public void playerJoin(PlayerJoinEvent event) {
+		Bukkit.getScheduler().runTaskAsynchronously(control.plugin, () -> control.plugin.getDatabase().fetchPlayerData(event.getPlayer().getUniqueId()));
 	}
 	
 	// TODO StackOverflowError workaround start
